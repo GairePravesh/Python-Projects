@@ -1,39 +1,10 @@
 '''
 Pravesh Gaire
-Extracting X and Y axis from G_code file 
-and saving them into a new file
 
-Not the best one but accurate enough
-decimals are removed and duplicate data are deleted for our project need.
+Python3.5 regex
 
-Requirements:
-g_code file  and a extra file to save data needed in same directory
-##########################################################################
-import math
-file1=open("g_code.nc","r")
-#c=0
-for lines in file1:
-    lineList=lines.split()
-    #c+=1
-    #print(C)
-    if 'X' and 'Y' in lines:
-        data=str(math.floor(float((lineList[1][1:]))))+" "+str(math.floor(float((lineList[2][1:]))))+"\n"
-        file2=open('test.txt','r')
-        lastline=file2.readlines()[-1]
-        if data!=lastline:
-            file2.close()
-            #print(str(round(((c/145000)*100),2))+" % ")
-            file2=open("test.txt","a")
-            file2.write(data)
-            file2.close()
-file1.close()        
-file2.close()
-
+filtering gcode data using simple regex implementation to find x and y coordinates
 '''
-# Using Regex it was much more easier
-# Asked in Stackeroverflow for better approach and I got to know about Regex and its uses in such problems
-# Far better approach than previous
-#############################################################################
 
 import re
 numbers = []
