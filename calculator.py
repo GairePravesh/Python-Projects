@@ -1,3 +1,10 @@
+''''
+Pravesh Gaire
+
+Python3.6 tkinter
+
+A simple calculator made using tkinter in python
+'''
 from tkinter import* #python GUI library
 #-----------------------------------------------------------------
 def btnClick(number):
