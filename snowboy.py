@@ -1,23 +1,33 @@
+import snowboydecoder
+import sys
+import signal
+import pyttsx
+engine=pyttsx.Engine()
+voices=engine.getProperty('voices')
+engine.setProperty('voice',voices[9].id)
+rate=engine.getProperty('rate')
+engine.setProperty('rate',rate-10)
+# Demo code for listening two hotwords at the same time
 def trigger():
-    print("Claps")
+    speak("Claps for the crowd")
 	
 def lightCmd():
-    print("Lights")
+    speak("Lights on off for the room")
 
 def musicCmd():
-    print("Random Music Play")
+    speak("Random Music Play for my mood")
 
 def movieCmd():
-    print("Play movie")
+    speak("Play movie to watch")
 
 def stopCmd():
-    print("Stop played things")
+    speak("Stop played things its annoying")
 
 def curtainCmd():
-    print("Curtains")
+    speak("Curtains up down accordingly")
 
 def exitCmd():
-    print("Good bye")
+    speak("Good bye see u soon")
     detector.terminate()
     listenTrig()
 
@@ -32,41 +42,36 @@ def interrupt_callback():
     global interrupted
     return interrupted
 
-def listenTrig():
-    #trigModel=sys.argv[1:1] 
-    trigModel="models/claps.pmdl"
-    print("System at rest. Trigger it to use system")
-    detector = snowboydecoder.HotwordDetector(trigModel, sensitivity=0.4,audio_gain=1)
-    #detector.start(detected_callback=listenCmd(), interrupt_check=interrupt_callback,sleep_time=0.03)
-    detector.start(detected_callback=test(), interrupt_check=interrupt_callback,sleep_time=0.03)
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+interrupted = False
 
-#claps 0.4
-#lights 0.55
-#music 0.5
-#stop 0.4
-#movie 0.55
-#curtains 0.5
-#exit 0.5
 
-def listenCmd(): 
-    print('What do you want me to do sir')
-    #cmdModels = sys.argv[2:]
-    #val=[0.55,0.5,0.4,0.55,0.5,0.5]
-    val=[0.5]*6
-    cmdModels=["models/lights.pmdl","models/Music.pmdl","models/Stop.pmdl","models/Movie.pmdl","models/curtains.pmdl","models/Exit.pmdl"]
-    detector = snowboydecoder.HotwordDetector(cmdModels, sensitivity=val,audio_gain=1)
-    callbacks = [lambda: lightCmd(), lambda: musicCmd(), lambda: stopCmd(), lambda: movieCmd(), lambda: curtainCmd(), lambda: exitCmd()]
-    detector.start(detected_callback=callbacks, interrupt_check=interrupt_callback, sleep_time=0.03)
+def signal_handler(signal, frame):
+    global interrupted
+    interrupted = True
 
-import snowboydecoder
-#import sys
-import signal
-interrupted = False 
-'''   
-if len(sys.argv) == 1:
-    print("Error: need to specify model name")
-    print("Usage: python program_file_name model_name")
-    sys.exit(-1)
-'''
+
+def interrupt_callback():
+    global interrupted
+    return interrupted
+
+
+models = ["models/claps.pmdl","models/lights.pmdl","models/Music.pmdl","models/Stop.pmdl","models/Movie.pmdl","models/curtains.pmdl","models/Exit.pmdl"]
+
+# capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
-listenTrig()
+
+sensitivity = [0.55]*7
+detector = snowboydecoder.HotwordDetector(models, sensitivity=sensitivity)
+callbacks = [lambda: trigger(),lambda: lightCmd(), lambda: musicCmd(), lambda: stopCmd(), lambda: movieCmd(), lambda: curtainCmd(), lambda: exitCmd()]
+print('Listening... Press Ctrl+C to exit')
+
+# main loop
+# make sure you have the same numbers of callbacks and models
+detector.start(detected_callback=callbacks,
+               interrupt_check=interrupt_callback,
+               sleep_time=0.03)
+
+detector.terminate()
