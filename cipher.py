@@ -1,42 +1,53 @@
-import requests
-import json
+#!python3
 
-url = "http://cricapi.com/api/matches?apikey=D18haZnedRZ3QijAQEJJV97U5r23"
-try:
-    r = requests.get(url)
-except:
-    print("Cant request the data, probably no internet connection")
-    exit(1)
-
-data = json.loads(r.text)
-
-print("Enter name of the country")
-teamName=input()
-id=""
-for item in data['matches']:
-    if (item['team-1']==teamName.title() or item["team-2"]==teamName.title()):
-        if item["matchStarted"]:
-            id=item["unique_id"]
-            break
+def getMode():
+    while True:
+        print("Encrypt or Decrypt?")
+        mode=input().lower()
+        if mode in 'encrypt e decrypt d'.split():
+            return mode
         else:
-            print("Match not started yet")
-            exit(1)
-else:
-    print("Country not found")
-    exit(1)
+            print("Enter correct choice")
 
-if id:
-    try:
-        r = requests.get("http://cricapi.com/api/cricketScore?apikey=D18haZnedRZ3QijAQEJJV97U5r23&unique_id="+str(id))
-        score = json.loads(r.text)
-    except:
-        print("Cant load the data, probably wrong id")
-        exit(1)
-    
+def getMessage():
+    print("Enter text to convert")
+    return input()
 
-print(score['stat'])
-print("Score:\t"+score['score'].replace("&amp;"," & "))
+def getKey():
+    while True:
+        print("Enter any key from 1 to 26")
+        key=int(input())
+        if(key>=1 and key<=26):
+            return key
 
-#print("Match Stared:\t"+str(score['matchStarted']))
-#print(score["team-1"])
-#print(score["team-2"])
+def getTranslatedMessage(mode,message,key):
+    if mode[0]=='d':
+        key=-key
+    translated=""
+    for symbol in message:
+        if symbol.isalpha():
+            num=ord(symbol)
+            num+=key
+            if symbol.isupper():
+                if num>ord('Z'):
+                    num-=26
+                elif num<ord('A'):
+                    num+=26
+            elif symbol.islower():
+                if num>ord('z'):
+                    num-=26
+                elif num<=ord('a'):
+                    num+=26
+            translated+=chr(num)
+        else:
+            translated+=symbol
+    return translated
+
+mode=getMode()
+message=getMessage()
+key=getKey()
+
+print("Translated text:")
+print(getTranslatedMessage(mode,message,key))
+
+        
