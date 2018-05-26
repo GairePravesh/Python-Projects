@@ -11,3 +11,5 @@ Contains different small projects made for learning different libs of python<br>
 * Cricket Score <br>
 <img src="mazeSolver.png"><br>
 <img src="calculator.png"><br>
+<img src="gol.png"><br>
+
