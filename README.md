@@ -9,7 +9,8 @@ Contains different small projects made for learning different libs of python<br>
 * Download all the mp4 from a website<br>
 * Snow-Boy Hotword Detection <br>
 * Cricket Score <br>
-<img src="mazeSolver.png"><br>
-<img src="calculator.png"><br>
-<img src="gol.png"><br>
+* Cornway's Game of Life <br>
+<img src="mazeSolver.png"><br><br><br><br>
+<img src="calculator.png"><br><br><br><br>
+<img src="gol.png"><br><br><br><br>
 
