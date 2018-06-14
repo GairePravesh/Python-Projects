@@ -10,7 +10,14 @@ Contains different small projects made for learning different libs of python<br>
 * Snow-Boy Hotword Detection <br>
 * Cricket Score <br>
 * Cornway's Game of Life <br>
+* Fruit Ninja
+* Number Matching Game
+* Smart - Flappy
+* Screen Keyboard
 <img src="mazeSolver.png"><br><br><br><br>
 <img src="calculator.png"><br><br><br><br>
-<img src="gol.png"><br><br><br><br>
+<img src="fruitNinja.png"><br><br><br><br>
+<img src="numberMatch.png"><br><br><br><br>
+<img src="flappy.png"><br><br><br><br>
+<img src="keyboard.png"><br><br><br><br>
 
