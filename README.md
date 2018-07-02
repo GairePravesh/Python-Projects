@@ -14,10 +14,13 @@ Contains different small projects made for learning different libs of python<br>
 * Number Matching Game
 * Smart - Flappy
 * Screen Keyboard
+* A Personal Blog Prototype using django
+* A LAN Gallery to share photos using django server
 <img src="mazeSolver.png"><br><br><br><br>
 <img src="calculator.png"><br><br><br><br>
 <img src="fruitNinja.png"><br><br><br><br>
 <img src="numberMatch.png"><br><br><br><br>
 <img src="flappy.png"><br><br><br><br>
 <img src="keyboard.png"><br><br><br><br>
-
+<img src="blog.png"><br><br><br><br>
+<img src="gallery.png"><br><br><br><br>
