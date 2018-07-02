@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Gallery</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/homePage.css' %}" />
+		<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<div class="page-header">
+					<h1>
+						<a href="/home/">Gallery
+						<span class="glyphicon glyphicon-cloud-download"></span></a>
+						<a href="#"><span class="glyphicon glyphicon-plus" style="float: right;" ></span></a>
+					</h1>
+				</div>
+			</div>
+			<!-- Photo Grid -->
+			<div class="image-grid">
+				<div class="row">
+				{% for image in imagelist %}
+			        	<div class="thumbnail col-lg-3  col-md-4 col-xs-6">
+			            	<a href="/media/{{image}}"><img src="/media/{{ image }}"  class="img-responsive"></a>
+			        	</div>
+			    {% endfor %}
+			    </div>
+			</div>
+	</body>
+</html>
+
+
+
+    

@@ -1,0 +1,33 @@
+body {
+  font-family: Verdana, sans-serif;
+  margin: 0;
+  background-color: #47e0ff;
+}
+
+.jumbotron
+{
+	padding: 10px;
+}
+
+p
+{
+	color:brown;
+}
+
+.page-header
+{
+	font-family: Lobster, cursive;
+	font-size: 3em;
+}
+
+.glyphicon
+{
+	padding-left: 30px;
+}
+
+.container
+{
+	background-color: white;
+	height: 100%;
+}
+
