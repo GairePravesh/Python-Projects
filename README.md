@@ -16,3 +16,4 @@ Contains different small projects made for learning different libs of python<br>
 * Screen Keyboard
 * A Personal Blog Prototype using django
 * A LAN Gallery to share photos using django server
+* Random Quote Display as Desktop Notification 
