@@ -1,6 +1,7 @@
 # Personal-Practise<br>
 Contains different small projects made for learning different libs of python<br>
 
+* Simple Tic Tac Toe
 * MazeSolver using recursion<br>
 * Babyname Exractor from web using Regex <br>
 * Calculator using tkinter<br>
