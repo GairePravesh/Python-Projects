@@ -122,7 +122,7 @@ class Application(tk.Frame):
     def openFile(self):
         self.select = filedialog.askopenfilename(initialdir = "./",title = "Select file",filetypes = (("txt files","*.txt"),("all files","*.*")))
         if self.select:
-            with open(self.select, 'r') as f:
+            with open(self.select, 'r', encoding="utf-8") as f:
                 for row in f:
                     self.datas.append(row)
         else:
