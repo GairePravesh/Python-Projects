@@ -3,6 +3,7 @@ from tkinter import filedialog
 import random
 import pyaudio
 import wave
+import time
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -13,10 +14,9 @@ class Application(tk.Frame):
         self.frame = tk.Frame(self,bg="black")
         self.frame.pack(side="top", fill=tk.X)
 
-        self.display = tk.Text(self.frame, height=1)
+        self.display = tk.Text(self.frame, spacing1=10, spacing3=10, height=1, borderwidth=10, relief=tk.FLAT, font=("Helvetica",18),)
         self.display['fg']="blue"
-        self.display.pack(padx=5, pady=10, side="left")
-
+        self.display.pack(side="left",)
         self.datas = []
         self.filename = ""
         self.recorded = False
@@ -46,9 +46,9 @@ class Application(tk.Frame):
         self.record["text"] = "Record"
         self.record.pack(padx=5, pady=10, fill=tk.X)
 
-        self.record = tk.Button(self.recorderFrame, bg="black", fg="white", command=self.play)
-        self.record["text"] = "Play"
-        self.record.pack(padx=5, pady=10, fill=tk.X)
+        self.ply = tk.Button(self.recorderFrame, bg="black", fg="white", command=self.play)
+        self.ply["text"] = "Play"
+        self.ply.pack(padx=5, pady=10, fill=tk.X)
 
     def play(self):
         if not self.recorded:
@@ -77,11 +77,24 @@ class Application(tk.Frame):
         stream.close()
         p.terminate()
 
+    # def timer(self):
+    #     currentTimer = time.time()
+    #     secs = int(currentTimer - self.startTime)
+    #     self.record["text"] = secs
+    #     if secs < 10:
+    #         self.after(1000,self.timer)
+
     def recordAudio(self):
         if not self.filename:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, "Please select a file first")
             return
+        else:
+            import os
+            counter = os.system("./counter.sh &")
+
+        # self.startTime = time.time()
+        # self.timer();
 
         chunk = 1024  
         sample_format = pyaudio.paInt16
@@ -122,9 +135,18 @@ class Application(tk.Frame):
     def openFile(self):
         self.select = filedialog.askopenfilename(initialdir = "./",title = "Select file",filetypes = (("txt files","*.txt"),("all files","*.*")))
         if self.select:
-            with open(self.select, 'r', encoding="utf-8") as f:
-                for row in f:
-                    self.datas.append(row)
+            self.display.delete(1.0, tk.END)
+            self.display.insert(tk.END, self.select + " Selected")
+            try:
+                with open(self.select, 'r', encoding='utf-16') as f:
+                    for row in f:
+                        self.datas.append(row)
+                print("UTF-16 Used")
+            except:
+                with open(self.select, 'r', encoding='utf-8') as f:
+                    for row in f:
+                        self.datas.append(row)
+                print("UTF-8 Used")
         else:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, "Please, Select a File")
