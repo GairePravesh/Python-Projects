@@ -6,6 +6,8 @@ import wave
 import time
 import string
 
+
+
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -21,13 +23,12 @@ class Application(tk.Frame):
         self.datas = []
         self.filename = ""
         self.recorded = False
-        self.counter = 0
-        
+
         # self.display = tk.Text(self, height=2)
         # self.display['fg']="blue"
         # self.display.pack(side="bottom", padx=5, pady=10, fill=tk.X)
         # self.display.insert(tk.END, "Useful display Here !")
-        
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -58,7 +59,7 @@ class Application(tk.Frame):
             self.display.insert(tk.END, "Please record first")
             return
 
-        chunk = 1024  
+        chunk = 1024
 
         wf = wave.open("datasets/"+self.filename.strip()+".wav", 'rb')
 
@@ -98,13 +99,13 @@ class Application(tk.Frame):
         # self.startTime = time.time()
         # self.timer();
 
-        chunk = 1024  
+        chunk = 1024
         sample_format = pyaudio.paInt16
         channels = 2
-        fs = 44100  
+        fs = 44100
         seconds = 10
 
-        p = pyaudio.PyAudio()  
+        p = pyaudio.PyAudio()
 
         stream = p.open(format=sample_format,
                         channels=channels,
@@ -112,17 +113,17 @@ class Application(tk.Frame):
                         frames_per_buffer=chunk,
                         input=True)
 
-        frames = []  
+        frames = []
 
-        
+
         for i in range(0, int(fs / chunk * seconds)):
             data = stream.read(chunk)
             frames.append(data)
 
-        
+
         stream.stop_stream()
         stream.close()
-        
+
         p.terminate()
 
         wf = wave.open("datasets/"+self.filename.strip()+".wav", 'wb')
@@ -149,27 +150,43 @@ class Application(tk.Frame):
                     for row in f:
                         self.datas.append(row)
                 print("UTF-8 Used")
-            
-            
+
+
         else:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, "Please, Select a File")
 
 
     def sentenceDisplay(self):
+        global counter
         self.display.delete(1.0, tk.END)
         try:
-            self.filename = self.datas[self.counter]
+            self.filename = self.datas[counter]
             self.display.insert(tk.END, self.filename)
-            self.counter += 1
+            counter += 1
         except IndexError:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, "Please, Select a File")
+
 
 
 root = tk.Tk()
 root["bg"] = "black"
 root.title("Hello, World")
 root.geometry("+0+400")
+counter = 0
+# filename = position.text
+try:
+    with open('position.txt', 'r') as position:
+        for value in position:
+            counter = int(value)
+    print('Position exists and has value '+ value)
+
+except:
+    counter = 0
+    print('file position does not exist')
+
 app = Application(master=root)
 app.mainloop()
+with open('position.txt', 'w') as post:
+    post.write(str(counter))
