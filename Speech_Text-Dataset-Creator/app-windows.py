@@ -6,8 +6,6 @@ import wave
 import time
 import string
 
-
-
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -22,6 +20,7 @@ class Application(tk.Frame):
         self.display.pack(side="left",)
         self.datas = []
         self.filename = ""
+        self.sentence = ""
         self.recorded = False
 
         # self.display = tk.Text(self, height=2)
@@ -60,7 +59,6 @@ class Application(tk.Frame):
             return
 
         chunk = 1024
-
         wf = wave.open("datasets/"+self.filename.strip()+".wav", 'rb')
 
         p = pyaudio.PyAudio()
@@ -102,8 +100,8 @@ class Application(tk.Frame):
         chunk = 1024
         sample_format = pyaudio.paInt16
         channels = 2
-        fs = 44100
-        seconds = 10
+        fs = 16000
+        seconds = 2
 
         p = pyaudio.PyAudio()
 
@@ -137,6 +135,7 @@ class Application(tk.Frame):
 
     def openFile(self):
         self.select = filedialog.askopenfilename(initialdir = "./",title = "Select file",filetypes = (("txt files","*.txt"),("all files","*.*")))
+        global no_of_lines
         if self.select:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, self.select + " Selected")
@@ -144,11 +143,13 @@ class Application(tk.Frame):
                 with open(self.select, 'r', encoding='utf-16') as f:
                     for row in f:
                         self.datas.append(row)
+                        no_of_lines += 1
                 print("UTF-16 Used")
             except:
                 with open(self.select, 'r', encoding='utf-8') as f:
                     for row in f:
                         self.datas.append(row)
+                        no_of_lines += 1
                 print("UTF-8 Used")
 
 
@@ -158,12 +159,18 @@ class Application(tk.Frame):
 
 
     def sentenceDisplay(self):
-        global counter
+        global iteration
+        global offset
+        global no_of_lines
         self.display.delete(1.0, tk.END)
         try:
-            self.filename = self.datas[counter]
-            self.display.insert(tk.END, self.filename)
-            counter += 1
+            self.filename = self.datas[offset % no_of_lines].strip() + '_'+str(iteration)+'_'+str(offset)
+            self.sentence = self.datas[offset % no_of_lines]
+            print(str(offset+1)+'/'+str(no_of_lines))
+            self.display.insert(tk.END, self.sentence)
+            offset = (offset + 1) % no_of_lines
+            if offset == 0:
+                iteration += 1
         except IndexError:
             self.display.delete(1.0, tk.END)
             self.display.insert(tk.END, "Please, Select a File")
@@ -174,19 +181,31 @@ root = tk.Tk()
 root["bg"] = "black"
 root.title("Hello, World")
 root.geometry("+0+400")
-counter = 0
+iteration = 0
+offset = 0
+no_of_lines = 0
 # filename = position.text
 try:
     with open('position.txt', 'r') as position:
+        iteration_offset = []
         for value in position:
-            counter = int(value)
-    print('Position exists and has value '+ value)
+            iteration_offset.append(int(value))
+        print(iteration_offset)
+        iteration = iteration_offset[0]
+        offset = iteration_offset[1]
+        print(iteration)
+        print(offset)
+
+    print('This is your '+ str(iteration)+'th time recording. Welcome Back')
+    print('You are recording from the '+str(offset+1)+' th word')
 
 except:
-    counter = 0
+    iteration = 0
+    offset = 0
     print('file position does not exist')
 
 app = Application(master=root)
 app.mainloop()
 with open('position.txt', 'w') as post:
-    post.write(str(counter))
+    post.write(str(iteration)+'\n')
+    post.write(str(offset)+'\n')
